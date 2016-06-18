@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>数独</title>
+
+    <script src="js/shudu.js"></script>
+    <script src="js/utils.js"></script>
+  </head>
+  <body onload="main()">
+    <canvas id="canvas"></canvas>
+    <p>游戏需要支持几种模式</p>
+    <p>自定义游戏</p>
+    <p>选择游戏</p>
+    <p>玩游戏---并且支持提示,胜利等</p>
+    <p>一键求解---求所有解提示终端查看，无解提示</p>
+    <!--<button onclick="qiujie()">选择一个游戏</button>-->
+    <button onclick="create(this)">自定义游戏</button>
+    <button onclick="qiujie(this)">自动求解</button>
+    <select id="select" onchange="choose(this)">
+    </select>
+
+  <script src="js/controller.js"></script>
+  </body>
+</html>
