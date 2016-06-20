@@ -4,9 +4,9 @@
 function str2Array(str) {
     var str = str.split("");
     var arr = new Array(9);
-    for (let i = 0; i < 9; i++) {
+    for (var i = 0; i < 9; i++) {
         arr[i] = new Array(9);
-        for (let j = 0; j < 9; j++) {
+        for (var j = 0; j < 9; j++) {
             arr[i][j] = Number(str[i * 9 + j]);
         }
     }
@@ -15,8 +15,8 @@ function str2Array(str) {
 
 function array2Str(arr) {
     var str = "";
-    for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
+    for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
             str += arr[i][j] || 0;
         }
     }

@@ -40,10 +40,13 @@ function init(index) {
 }
 
 function reDraw() {
-    screenWidth = getWinSize();
+    screenWidth = Math.min(getWinSize(),500);
     screenHeight = screenWidth * 1.11;
     item_width = screenWidth / 10;
     padding = item_width / 3;
+
+    screenWidth -= padding;
+
     font_size = item_width * 2 / 3;
     font_offsetH = item_width / 2 - font_size / 4;
     font_offsetV = item_width / 2 + font_size / 2;

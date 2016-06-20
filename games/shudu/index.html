@@ -7,8 +7,29 @@
 
     <script src="js/shudu.js"></script>
     <script src="js/utils.js"></script>
+    <style >
+      html {
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        line-height: 1.6;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      a img {
+        border: 0;
+      }
+      a {
+        text-decoration: none;
+      }
+    </style>
   </head>
-  <body onload="main()">
+  <body onload="main()" sroll="no">
+  <div style="text-align: center">
     <canvas id="canvas"></canvas>
     <p>游戏需要支持几种模式</p>
     <p>自定义游戏</p>
@@ -20,6 +41,7 @@
     <button onclick="qiujie(this)">自动求解</button>
     <select id="select" onchange="choose(this)">
     </select>
+  </div>
 
   <script src="js/controller.js"></script>
   </body>
