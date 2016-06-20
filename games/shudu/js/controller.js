@@ -57,12 +57,15 @@ function reDraw() {
 }
 
 function selectGrid(event) {
-    var posX = event.pageX - canvas.offsetTop;
-    var posY = event.pageY - canvas.offsetLeft;
+    //console.log(event.pageX,canvas.offsetTop);
+    //console.log(event.pageY,canvas.offsetLeft)
+    var posX = event.pageX - canvas.offsetLeft;
+    var posY = event.pageY - canvas.offsetTop;
     if (posX > padding && posX < screenWidth - padding
         && posY > padding && posY < screenWidth - padding
     ) {
-        currentPos = [Math.round(posY / item_width) - 1, Math.round(posX / item_width) - 1];
+
+        currentPos = [Math.ceil((posY-padding) / item_width)-1, Math.ceil((posX-padding) / item_width)-1];
         if (shudu.shudu[currentPos[0]][currentPos[1]]) {
             currentPos = null;
         }
@@ -71,7 +74,7 @@ function selectGrid(event) {
     } else if (posX > padding && posX < screenWidth - padding && posY > item_width * 10 && posY < item_width * 11) {
         if (currentPos != null) {
             //var temp = Math.round(posX/item_width);
-            shudu2.shudu[currentPos[0]][currentPos[1]] = Math.round(posX / cell_width) - 1;
+            shudu2.shudu[currentPos[0]][currentPos[1]] = Math.ceil((posX-padding) / cell_width-1);
             draw();
         }
     } else {
@@ -83,9 +86,13 @@ function selectGrid(event) {
 
 function qiujie() {
     if(isCreate){
-        return;
+        create( document.getElementById("custom"));
     }
     shudu2 = execute(shudu.copy());
+    if(!shudu2) {
+        alert("未找到解");
+        return;
+    }
     draw();
 }
 
@@ -110,7 +117,8 @@ function create(btn) {
 
 function choose(select) {
     if(isCreate){
-        return;
+        create( document.getElementById("custom"));
+        //return;
     }
     init(select.selectedIndex);
     draw();
@@ -130,13 +138,14 @@ function getWinSize() {
     return winWidth;
 }
 
-
 function draw() {
+
+
+
     var context = canvas.getContext("2d");
-
-
     context.clearRect(0, 0, screenWidth, screenHeight);
-
+    //context.fillStyle="#888888"
+    //context.fillRect(0,0,screenWidth,screenHeight)
 
     //绘制数字
     for (var i = 0; i < 9; i++) {
@@ -237,6 +246,99 @@ function draw() {
             item_width
         );
     }
+}
 
 
+
+//用于绘制微信分享图标用 --废弃不用了
+function saveImage() {
+    var cacheCanvas;
+
+        cacheCanvas = document.createElement("canvas");
+    var width = 300;
+        cacheCanvas.width = width;
+        cacheCanvas.height = width;
+
+    var item_width = width/10;
+    var padding = item_width/2;
+
+
+    var font_size = item_width * 2 / 3;
+    var font_offsetH = item_width / 2 - font_size / 4;
+    var font_offsetV = item_width / 2 + font_size / 2;
+
+    var context = cacheCanvas.getContext("2d");
+    context.clearRect(0,0,300,300);
+
+
+    for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
+            //绘制数字
+
+            if (shudu.shudu[i][j]) {
+                context.fillStyle = "#999";
+                context.fillRect(padding + j * item_width, padding + i * item_width, item_width, item_width);
+                context.fillStyle = "black";
+                context.font = "lighter " + font_size + "px sans-serif";
+                //context.fontsize=font_size+"px";
+                context.fontWeight = "normal"
+                context.fillText(
+                    shudu.shudu[i][j],
+                    item_width * j + padding + font_offsetH,
+                    item_width * i + padding + font_offsetV
+                );
+            } else if (shudu2 && shudu2.shudu[i][j]) {
+                context.fillStyle = "black";
+                context.font = font_size + "px sans-serif";
+                context.fillText(
+                    shudu2.shudu[i][j],
+                    item_width * j + padding + font_offsetH,
+                    item_width * i + padding + font_offsetV
+                );
+            }
+        }
+    }
+
+
+    //绘制细线
+    context.strokeStyle = "black";
+    context.beginPath();
+    context.lineWidth = 1;
+    for (var i = 0; i < 10; i++) {
+        if (i == 0 || i == 9 || i == 3 || i == 6) {
+            continue;
+        }
+        context.moveTo(padding, padding + i * item_width);
+        context.lineTo(padding + item_width * 9, i * item_width + padding);
+        context.moveTo(padding + i * item_width, padding)
+        context.lineTo(padding + i * item_width, padding + item_width * 9);
+    }
+    context.stroke();
+    //绘制中间线
+    context.lineWidth = 3;
+    context.beginPath();
+    for (var i = 0; i < 10; i++) {
+        if (i == 0 || i == 9) {
+            continue;
+        } else if (i == 3 || i == 6) {
+
+        } else {
+            continue;
+        }
+        context.moveTo(padding, padding + i * item_width);
+        context.lineTo(padding + item_width * 9, i * item_width + padding);
+        context.moveTo(padding + i * item_width, padding)
+        context.lineTo(padding + i * item_width, padding + item_width * 9);
+
+    }
+    context.stroke();
+    //绘制外边框
+    context.lineWidth = 4;
+    context.strokeRect(padding, padding, item_width * 9, item_width * 9);
+
+
+
+    var image =cacheCanvas.toDataURL("image/png");
+    console.log(image);
+    document.getElementById("img").src=image;
 }
